@@ -61,6 +61,7 @@ dependencies {
     implementation(retrofitDependencies.logging_interceptor)
     //Dagger - Hilt
     implementation(hiltDependencies.hilt)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(hiltDependencies.hilt_compiler)
     //navigation comp
     implementation(androidxsupportDependencies.navigation_fragment)

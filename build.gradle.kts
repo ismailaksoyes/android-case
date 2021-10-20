@@ -11,6 +11,7 @@ buildscript {
         classpath (BuildPluginsDependencies.navigationGradlePlugin)
         classpath (BuildPluginsDependencies.hiltGradlePlugin)
         classpath (BuildPluginsDependencies.navigationGradlePlugin)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
 
     }
 }
