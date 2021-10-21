@@ -23,13 +23,16 @@ object ApiModule {
     @Provides
     fun provideBaseUrl() = Constants.BASE_URL
 
+    @Provides
+    fun provideApiKey() = Constants.API_KEY
+
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String,API_KEY:String): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
