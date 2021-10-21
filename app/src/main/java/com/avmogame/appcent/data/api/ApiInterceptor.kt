@@ -11,9 +11,6 @@ class ApiInterceptor  @Inject constructor():Interceptor{
             .newBuilder()
             .addHeader("Content-Type", "application/json;charset=utf-8")
             .addHeader("Accept", "application/json")
-            .addHeader("Content-Language","en")
-            .addHeader("Cache-Control","private, no-cache, no-store, must-revalidate")
-             .addHeader("Accept-Encoding","gzip, deflate")
             .build()
 
         return chain.proceed(request)
