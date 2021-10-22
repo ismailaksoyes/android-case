@@ -22,5 +22,7 @@ data class ResponseGame(
     @SerializedName("publishers")
     val publishers: List<Publisher>,
     @SerializedName("description_raw")
-    val descriptionRaw: String
+    val descriptionRaw: String,
+    @SerializedName("rating")
+    val rating:String
 )
