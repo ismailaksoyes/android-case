@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="text_medium_style">
+        <item name="fontFamily">@font/ibm_plex_sans_medium</item>
+        <item name="android:textColor">@color/blue_dark</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="text_normal_style">
+        <item name="fontFamily">@font/ibm_plex_sans_bold</item>
+        <item name="android:textColor">@color/blue_dark</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+    </style>
+</resources>
