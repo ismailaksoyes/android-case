@@ -77,6 +77,8 @@ dependencies {
 
     implementation(kotlinDependencies.coroutines_play_services)
 
+    implementation(pagingDependencies.paging)
+
     testImplementation(testingDepencies.junit)
     testImplementation(testingDepencies.junit_ext)
     testImplementation(testingDepencies.espresso)

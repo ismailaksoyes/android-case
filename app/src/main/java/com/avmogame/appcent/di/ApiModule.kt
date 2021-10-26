@@ -1,9 +1,6 @@
 package com.avmogame.appcent.di
 
-import com.avmogame.appcent.data.api.ApiHelper
-import com.avmogame.appcent.data.api.ApiHelperImpl
-import com.avmogame.appcent.data.api.ApiInterceptor
-import com.avmogame.appcent.data.api.ApiService
+import com.avmogame.appcent.data.remote.*
 import com.avmogame.appcent.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -23,8 +20,7 @@ object ApiModule {
     @Provides
     fun provideBaseUrl() = Constants.BASE_URL
 
-    @Provides
-    fun provideApiKey() = Constants.API_KEY
+
 
     @Singleton
     @Provides
@@ -32,7 +28,11 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String,API_KEY:String): Retrofit = Retrofit.Builder()
+    fun provideGameDataSource(apiHelper: ApiHelper):GamePagingSource = GamePagingSource(apiHelper)
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: String): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
@@ -55,7 +55,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+    fun provideApiHelper(apiService: ApiService): ApiHelper = ApiHelper(apiService)
 
     @Singleton
     @Provides

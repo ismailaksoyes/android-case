@@ -1,6 +1,6 @@
-package com.avmogame.appcent.data.api
+package com.avmogame.appcent.data.remote
 
-import com.avmogame.appcent.data.remote.ResponseGames
+import com.avmogame.appcent.data.entities.ResponseGames
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,16 +10,12 @@ interface ApiService {
 
     @GET("games")
     suspend fun getGamesList(
-        @Path("page") page:Int?
+        @Query("page") page:Int?
     ):Response<ResponseGames>
 
     @GET("games/{gameId}")
     suspend fun getGameDetails(
-        @Path("gameId") gameId:String
+        @Path("gameId") gameId:Int
     ):Response<ResponseGames>
 
-    @GET("games")
-    suspend fun getSearchGame(
-        @Query("search") search:String
-    ):Response<ResponseGames>
 }

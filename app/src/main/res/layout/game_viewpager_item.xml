@@ -3,23 +3,22 @@
     android:id="@+id/cv_game_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:layout_marginTop="5dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/margin_normal"
+    android:layout_marginEnd="@dimen/margin_normal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true">
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_game_poster"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_game_name"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_small"
-        android:elevation="8dp"
         app:cardElevation="8dp">
 
         <ImageView
@@ -27,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_search_24"
+            android:scaleType="centerCrop"
             />
     </com.google.android.material.card.MaterialCardView>
 
@@ -40,7 +39,8 @@
        app:layout_constraintStart_toStartOf="@id/cv_game_poster"
         style="@style/text_normal_style"
         android:layout_marginStart="20dp"
-        android:background="@drawable/viewpager_text_backgraund"
+        android:background="@drawable/viewpager_text_background"
+        android:padding="5dp"
         android:text="GAME OF NAME"
         android:elevation="9dp"/>
     <TextView
@@ -51,7 +51,9 @@
         app:layout_constraintStart_toStartOf="@id/cv_game_poster"
         style="@style/text_medium_style"
         android:layout_marginStart="20dp"
-        android:background="@drawable/viewpager_text_backgraund"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:background="@drawable/viewpager_text_background"
         android:text="Rating - released"
         android:elevation="9dp"/>
 
