@@ -29,7 +29,7 @@ object AppModule {
         app,
         AppDatabase::class.java,
         GAME_DATABASE
-    )
+    ).build()
 
     @Singleton
     @Provides

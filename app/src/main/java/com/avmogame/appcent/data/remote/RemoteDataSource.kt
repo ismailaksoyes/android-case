@@ -7,10 +7,10 @@ import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.util.NetworkConnectivity
 import javax.inject.Inject
 
-class RemoteDataSource @Inject constructor(private val apiHelper: ApiHelper,private val gamePagingSource: GamePagingSource) {
+class RemoteDataSource @Inject constructor(private val apiHelper: ApiHelper) {
 
-    fun getGamesSource() = gamePagingSource
     suspend fun getGameDetails(gameId:Int) = apiHelper.getGameDetails(gameId)
+    suspend fun getGameList(page:Int?) = apiHelper.getGamesList(page)
 
 
 }

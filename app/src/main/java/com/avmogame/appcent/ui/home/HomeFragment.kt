@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.avmogame.appcent.R
 import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.databinding.FragmentHomeBinding
@@ -32,6 +33,10 @@ class HomeFragment : Fragment() {
 
     val viewModel:HomeViewModel by viewModels()
 
+    private var isLoading: Boolean = false
+
+    private lateinit var layoutManager: LinearLayoutManager
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +54,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        layoutManager = LinearLayoutManager(view.context)
         setupGamesAdapter()
         setupSlideViewPager()
         setSlideData()
         setGameData()
+        observeGamesData()
     }
 
     private fun setSlideData() {
@@ -85,13 +92,7 @@ class HomeFragment : Fragment() {
             )
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getGameFlow.collect {
-                gameAdapter.submitData(it)
-            }
 
-
-        }
         gameAdapter.addLoadStateListener {itState->
             if (itState.refresh is LoadState.Loading && gameAdapter.itemCount == 0){
 
@@ -101,14 +102,51 @@ class HomeFragment : Fragment() {
 
 
     }
+
+    private fun scrollListener(){
+        binding.rvGames.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                recyclerView.layoutManager?.let { itLayoutManager ->
+                    if (!isLoading && itLayoutManager.itemCount == (layoutManager.findLastVisibleItemPosition() + 1) && itLayoutManager.itemCount > 1) {
+                       // loadData(itLayoutManager.itemCount)
+                        isLoading = true
+                    }
+
+                }
+            }
+
+        })
+    }
+    fun loadGamesData(page:Int?){
+        page?.let { itPage->
+            lifecycleScope.launch {
+                viewModel.loadGames(itPage)
+            }
+        }
+    }
+
+    fun observeGamesData(){
+        lifecycleScope.launch {
+            viewModel.gameList.collect {
+                when(it){
+                    is HomeViewModel.GamesState.SlideData->{
+                        slideAdapter.replaceItems(it.gameData)
+                    }
+                    is HomeViewModel.GamesState.GamesData->{
+
+                    }
+                }
+            }
+        }
+    }
     private fun setupSlideViewPager(){
         binding.pager2.adapter = slideAdapter
     }
 
     private fun setupGamesAdapter(){
         binding.rvGames.adapter = gameAdapter
-        binding.rvGames.isNestedScrollingEnabled = true
-        binding.rvGames.layoutManager = LinearLayoutManager(this.context,LinearLayoutManager.VERTICAL,false)
+        binding.rvGames.layoutManager = layoutManager
     }
 
 

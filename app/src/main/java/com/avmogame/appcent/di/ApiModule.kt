@@ -26,9 +26,6 @@ object ApiModule {
     @Provides
     fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
 
-    @Singleton
-    @Provides
-    fun provideGameDataSource(apiHelper: ApiHelper):GamePagingSource = GamePagingSource(apiHelper)
 
     @Singleton
     @Provides
