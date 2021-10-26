@@ -33,6 +33,8 @@ object Versions {
 
     const val paging_version = "3.0.1"
 
+    const val room_version = "2.3.0"
+
 }
 
 object buildConfigVersions{
@@ -103,4 +105,10 @@ object shimmerDependencies {
 
 object pagingDependencies{
     const val paging = "androidx.paging:paging-runtime:${Versions.paging_version}"
+}
+
+object roomDependencies {
+    const val room_ktx = "androidx.room:room-ktx:${Versions.room_version}"
+    const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
+    const val room_testing = "androidx.room:room-testing:${Versions.room_version}"
 }
