@@ -83,4 +83,8 @@ dependencies {
     testImplementation(testingDepencies.junit_ext)
     testImplementation(testingDepencies.espresso)
 
+    implementation(roomDependencies.room_compiler)
+    implementation(roomDependencies.room_ktx)
+    implementation(roomDependencies.room_testing)
+
 }

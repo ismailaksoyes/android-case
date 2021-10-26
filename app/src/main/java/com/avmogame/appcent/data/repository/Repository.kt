@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.avmogame.appcent.data.local.GamesDao
 import com.avmogame.appcent.data.remote.RemoteDataSource
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val remoteDataSource: RemoteDataSource) {
+class Repository @Inject constructor(private val remoteDataSource: RemoteDataSource,private val localDataSource:GamesDao) {
 
 
      suspend fun getGameDetails(gameId:Int) = remoteDataSource.getGameDetails(gameId)
