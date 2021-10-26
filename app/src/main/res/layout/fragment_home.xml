@@ -6,39 +6,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.HomeFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:hint="@string/search_hint"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_search_24"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginEnd="@dimen/margin_normal"
-        >
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:inputType="none"
-            android:background="@null"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/et_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_small"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint="@string/search_hint"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_baseline_search_24"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="none"
+                android:background="@null"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_group_purchase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/trans"
+            app:elevation="0dp">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll">
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/pager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/pager2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/margin_normal"
+            tools:listitem="@layout/game_list_item"
+            tools:itemCount="9"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,4 @@
+
 object Versions {
     const val lifecycle_version = "2.3.1"
     const val coroutines_version = "1.5.2"
@@ -29,6 +30,8 @@ object Versions {
     const val coroutines_play_services_version = "1.2.1"
 
     const val facebook_shimmer_version = "0.5.0"
+
+    const val paging_version = "3.0.1"
 
 }
 
@@ -96,4 +99,8 @@ object hiltDependencies {
 }
 object shimmerDependencies {
     const val shimmer = "com.facebook.shimmer:shimmer:${Versions.facebook_shimmer_version}"
+}
+
+object pagingDependencies{
+    const val paging = "androidx.paging:paging-runtime:${Versions.paging_version}"
 }

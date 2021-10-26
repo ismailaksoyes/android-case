@@ -2,9 +2,9 @@ package com.avmogame.appcent.util
 
 sealed class Resource<T>(
     val data: T? = null,
-    val errorCode: Int? = null
+    val errorCode: String? = null
 ) {
     class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(errorCode: Int) : Resource<T>(null, errorCode)
+    class Error<T>(errorMsg: String) : Resource<T>(null, errorMsg)
 
 }

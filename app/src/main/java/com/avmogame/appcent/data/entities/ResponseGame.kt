@@ -1,4 +1,4 @@
-package com.avmogame.appcent.data.remote
+package com.avmogame.appcent.data.entities
 
 import com.google.gson.annotations.SerializedName
 
