@@ -29,7 +29,7 @@ object Versions {
     const val espresso_version = "3.4.0"
     const val coroutines_play_services_version = "1.2.1"
 
-    const val facebook_shimmer_version = "0.5.0"
+    const val facebook_shimmer_version = "0.4.0"
 
     const val paging_version = "3.0.1"
 

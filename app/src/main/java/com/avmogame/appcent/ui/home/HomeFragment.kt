@@ -3,39 +3,27 @@ package com.avmogame.appcent.ui.home
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.avmogame.appcent.R
 import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.databinding.FragmentHomeBinding
 import com.avmogame.appcent.ui.home.adapter.GameAdapter
-import com.avmogame.appcent.ui.home.adapter.GameItemIn
 import com.avmogame.appcent.ui.home.adapter.SlidePagerAdapter
 import com.avmogame.appcent.util.GameAdapterState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val slideAdapter by lazy { SlidePagerAdapter() }
 
     lateinit var binding: FragmentHomeBinding
 
@@ -43,15 +31,7 @@ class HomeFragment : Fragment() {
 
     private var isLoading: Boolean = false
 
-    private var isSearch: Boolean = false
-
     private lateinit var layoutManager: LinearLayoutManager
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +47,7 @@ class HomeFragment : Fragment() {
         setupGamesAdapter()
         setupSlideViewPager()
         observeGamesData()
+        observeSlideData()
         scrollListener()
         searchListener()
         observeSearch()
@@ -75,8 +56,17 @@ class HomeFragment : Fragment() {
 
     private fun observeSearch() {
         viewModel.searchResult.observe(viewLifecycleOwner, {
+            if (it.isEmpty()) {
+                setNotFoundViewVisibility(isVisible = true)
+            } else {
+                setNotFoundViewVisibility(isVisible = false)
+            }
             (binding.rvGames.adapter as GameAdapter).submitList(it)
         })
+    }
+
+    private fun setNotFoundViewVisibility(isVisible: Boolean) {
+        binding.tvNotFound.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
 
     private fun searchListener() {
@@ -107,14 +97,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun showFeed() {
+        setNotFoundViewVisibility(isVisible = false)
         setAdapterState(GameAdapterState.FEED_STATE)
         (binding.rvGames.adapter as GameAdapter).setData(viewModel.tempList)
     }
-
-    private fun clickItem() {
-
-    }
-
 
     private fun scrollListener() {
         binding.rvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -122,7 +108,7 @@ class HomeFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 recyclerView.layoutManager?.let { itLayoutManager ->
                     if (!isLoading && itLayoutManager.itemCount == (layoutManager.findLastVisibleItemPosition() + 1) && itLayoutManager.itemCount > 1) {
-                        if (!isSearch) {
+                        if (viewModel.gameAdapterState.value?.equals(GameAdapterState.FEED_STATE) == true) {
                             isLoading = true
                             loadGamesData(page = viewModel.currentPage.plus(1))
                         }
@@ -147,9 +133,6 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.gameList.collect {
                 when (it) {
-                    is HomeViewModel.GamesState.SlideData -> {
-                        slideAdapter.replaceItems(it.gameData)
-                    }
                     is HomeViewModel.GamesState.GamesData -> {
                         if (binding.rvGames.adapter is GameAdapter) {
                             val oldList: ArrayList<GameData> =
@@ -164,23 +147,34 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun observeSlideData() {
+        lifecycleScope.launch {
+            viewModel.gameSlideList.collect {
+                when (it) {
+                    is HomeViewModel.SlideState.SlideData -> {
+                        (binding.pager2.adapter as SlidePagerAdapter).replaceItems(it.gameData)
+                    }
+
+                }
+            }
+        }
+    }
+
     private fun setupSlideViewPager() {
-        binding.pager2.adapter = slideAdapter
+        binding.pager2.adapter = SlidePagerAdapter { itGameData ->
+            navigateDetails(itGameData)
+        }
     }
 
     private fun setupGamesAdapter() {
-        binding.rvGames.adapter = GameAdapter(object : GameItemIn {
-            override fun gameData(gameData: GameData) {
-                navigateDetails(gameData)
-            }
-
-        })
+        binding.rvGames.adapter = GameAdapter { itGameData ->
+            navigateDetails(itGameData)
+        }
         binding.rvGames.itemAnimator = null
         binding.rvGames.layoutManager = layoutManager
     }
 
-    private fun isSearch() {
-        isSearch = true
+    private fun renderSearchState() {
         binding.pager2.visibility = View.GONE
     }
 
@@ -191,8 +185,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun isFeed() {
-        isSearch = false
+    private fun renderFeedState() {
         binding.pager2.visibility = View.VISIBLE
     }
 
@@ -201,10 +194,10 @@ class HomeFragment : Fragment() {
             viewModel.gameAdapterState.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     GameAdapterState.FEED_STATE -> {
-                        isFeed()
+                        renderFeedState()
                     }
                     GameAdapterState.SEARCH_STATE -> {
-                        isSearch()
+                        renderSearchState()
                     }
                 }
 

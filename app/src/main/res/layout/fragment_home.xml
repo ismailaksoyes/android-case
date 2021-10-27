@@ -71,17 +71,25 @@
             android:id="@+id/rv_games"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
             tools:listitem="@layout/game_list_item"
             tools:itemCount="9"
             android:overScrollMode="never"
-            android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
+<TextView
+    android:id="@+id/tv_not_found"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="@style/text_normal_style"
+    android:text="@string/not_found"
+    android:visibility="gone"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="home_bottom_title">Home</string>
-    <string name="favorites_bottom_title">Like</string>
+    <string name="favorites_bottom_title">Favorites</string>
     <string name="search_hint">Search</string>
     <string name="favorites_title">Favorites</string>
     <string name="details_title">Details</string>
+    <string name="not_found">The searched game not found.</string>
 </resources>

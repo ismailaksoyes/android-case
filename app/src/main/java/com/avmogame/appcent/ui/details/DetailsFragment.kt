@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -17,20 +16,26 @@ import com.avmogame.appcent.R
 import com.avmogame.appcent.data.entities.GameDetailsData
 import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.databinding.FragmentDetailsBinding
+import com.avmogame.appcent.util.fadeIn
 import com.avmogame.appcent.util.urlToImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
+
+    companion object {
+        const val IS_FAVORITE_STATE_CHANGE = "is_favorite_state_change"
+    }
 
     private val args: DetailsFragmentArgs by navArgs()
 
     lateinit var binding: FragmentDetailsBinding
 
     val viewModel: DetailsViewModel by viewModels()
+
+    var isFavoriteStateChange: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +57,7 @@ class DetailsFragment : Fragment() {
         observeFavoriteStatus()
         actionFavoriteClick()
         getFavoriteStatus()
-        navigate()
+        initListeners()
 
 
     }
@@ -102,6 +107,7 @@ class DetailsFragment : Fragment() {
         binding.ivFavorite.setOnClickListener {
             val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.favorite_anim)
             it.startAnimation(animation)
+            isFavoriteStateChange = true
             lifecycleScope.launch {
                 viewModel.setFavoritesType()
             }
@@ -130,11 +136,18 @@ class DetailsFragment : Fragment() {
         binding.ivGamePoster.urlToImage(gameData.imageUrl)
         binding.tvGameName.text = gameData.name
         binding.tvReleased.text = gameData.released
+        binding.tvGameName.fadeIn()
+        binding.tvReleased.fadeIn()
+        binding.tvDesc.fadeIn()
     }
 
-    private fun navigate() {
+    private fun initListeners() {
         binding.ivBackIco.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                IS_FAVORITE_STATE_CHANGE,
+                isFavoriteStateChange
+            )
+            findNavController().popBackStack()
         }
     }
 

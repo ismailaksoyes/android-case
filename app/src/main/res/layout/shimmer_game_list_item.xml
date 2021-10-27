@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shimmerFrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/cv_game_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:focusable="true"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_game_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_game_name">
+
+            <ImageView
+                android:id="@+id/iv_game_poster"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@color/shimmer_color"
+                android:tintMode="multiply"
+                app:tint="@color/trans"
+                />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tv_game_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/cv_game_poster"
+            app:layout_constraintBottom_toTopOf="@id/tv_rating_released"
+            app:layout_constraintStart_toEndOf="@id/cv_game_poster"
+            style="@style/text_normal_style"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/trans"
+            android:background="@color/shimmer_color"
+            android:text="----------"/>
+        <TextView
+            android:id="@+id/tv_rating_released"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_game_name"
+            app:layout_constraintStart_toEndOf="@id/cv_game_poster"
+            app:layout_constraintBottom_toBottomOf="@id/cv_game_poster"
+            style="@style/text_medium_style"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/trans"
+            android:background="@color/shimmer_color"
+            android:text="----------"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.facebook.shimmer.ShimmerFrameLayout>

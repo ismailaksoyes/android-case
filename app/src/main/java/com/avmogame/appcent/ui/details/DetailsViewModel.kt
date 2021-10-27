@@ -16,26 +16,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(val repository: Repository): ViewModel(){
+class DetailsViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     private val _gameDetails = MutableStateFlow<DetailState>(DetailState.Empty)
-    val gameDetails:StateFlow<DetailState> = _gameDetails
+    val gameDetails: StateFlow<DetailState> = _gameDetails
 
-    val favoriteType= MutableLiveData<Boolean>()
+    val favoriteType = MutableLiveData<Boolean>()
 
-     private var gameId:Int = -1
+    private var gameId: Int = -1
 
     sealed class DetailState {
         object Empty : DetailState()
-        object Loading : DetailState()
         data class DetailsData(val gameData: GameDetailsData) : DetailState()
     }
 
-    suspend fun getGameDetails(){
+    suspend fun getGameDetails() {
         viewModelScope.launch {
-            when(val response = repository.getGameDetails(gameId)){
-                is Resource.Success->{
-                    response.data?.let { itData->
+            when (val response = repository.getGameDetails(gameId)) {
+                is Resource.Success -> {
+                    response.data?.let { itData ->
                         _gameDetails.value = DetailState.DetailsData(itData.toGameDetails())
                     }
 
@@ -45,24 +44,24 @@ class DetailsViewModel @Inject constructor(val repository: Repository): ViewMode
         }
     }
 
-    suspend fun getFavoriteStatus(){
+    suspend fun getFavoriteStatus() {
         viewModelScope.launch {
             val response = repository.getFavoriteType(gameId)
             favoriteType.postValue(response)
         }
     }
 
-    fun setFavoritesType(){
+    fun setFavoritesType() {
         viewModelScope.launch {
-            favoriteType.value?.let { itValue->
-                repository.setFavoritesType(!itValue,gameId)
+            favoriteType.value?.let { itValue ->
+                repository.setFavoritesType(!itValue, gameId)
                 getFavoriteStatus()
             }
 
         }
     }
 
-    fun setGameId(gameId: Int){
+    fun setGameId(gameId: Int) {
         this.gameId = gameId
     }
 

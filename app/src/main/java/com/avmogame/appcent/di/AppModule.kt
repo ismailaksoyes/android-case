@@ -25,7 +25,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext app:Context) = Room.databaseBuilder(
+    fun provideDatabase(@ApplicationContext app: Context) = Room.databaseBuilder(
         app,
         AppDatabase::class.java,
         GAME_DATABASE
@@ -33,5 +33,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRoomDao(db:AppDatabase) = db.gamesDao
+    fun provideRoomDao(db: AppDatabase) = db.gamesDao
 }
