@@ -3,22 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detailsFragment">
+    app:startDestination="@id/destination_home">
 
     <fragment
         android:id="@+id/destination_home"
         android:name="com.avmogame.appcent.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_destination_home_to_destination_details"
+            app:destination="@id/destination_details" />
+    </fragment>
     <fragment
-        android:id="@+id/destination_star"
+        android:id="@+id/destination_favorites"
         android:name="com.avmogame.appcent.ui.favorites.FavoritesFragment"
         android:label="fragment_star"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_destination_favorites_to_destination_details"
+            app:destination="@id/destination_details" />
+    </fragment>
     <fragment
-        android:id="@+id/detailsFragment"
-        android:name="com.avmogame.appcent.ui.DetailsFragment"
+        android:id="@+id/destination_details"
+        android:name="com.avmogame.appcent.ui.details.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <action
+            android:id="@+id/action_destination_details_to_destination_home"
+            app:destination="@id/destination_home" />
+        <action
+            android:id="@+id/action_destination_details_to_destination_favorites"
+            app:destination="@id/destination_favorites" />
+        <argument
+            android:name="gameData"
+            app:argType="com.avmogame.appcent.data.local.GameData" />
+    </fragment>
 
 </navigation>

@@ -8,8 +8,8 @@
         android:icon="@drawable/ic_baseline_home_24"
         />
     <item
-        android:id="@+id/destination_star"
-        android:title="@string/like_bottom_title"
+        android:id="@+id/destination_favorites"
+        android:title="@string/favorites_bottom_title"
         android:menuCategory="secondary"
         android:icon="@drawable/ic_baseline_star_24"
         />

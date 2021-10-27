@@ -25,4 +25,10 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
 
     suspend fun searchGame(search: String) =  localDataSource.getGameSearch(search)
 
+    suspend fun getLocalGameData(gameId: Int) = localDataSource.getLocalGameData(gameId)
+
+    suspend fun setFavoritesType(isFav:Boolean,gameId: Int) = localDataSource.setFavoriteType(isFav,gameId)
+
+    suspend fun getFavoriteType(gameId: Int) = localDataSource.getFavoriteType(gameId)
+
 }

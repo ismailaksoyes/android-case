@@ -14,17 +14,14 @@ import com.avmogame.appcent.util.urlToImage
 
 
 
-class GameAdapter : ListAdapter<GameData, GameViewHolder>(DiffCallback()) {
+class GameAdapter(val gameItemIn: GameItemIn) : ListAdapter<GameData, GameViewHolder>(DiffCallback()) {
 
     private var list = mutableListOf<GameData>()
 
-    var searchState: Boolean = false
-
-    var currentState: GameAdapterState = GameAdapterState.FEED_STATE
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val binding =
             GameListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GameViewHolder(binding)
+        return GameViewHolder(binding,gameItemIn)
     }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
@@ -50,7 +47,7 @@ private class DiffCallback: DiffUtil.ItemCallback<GameData>() {
 }
 
 
-class GameViewHolder(private val binding: GameListItemBinding) :
+class GameViewHolder(private val binding: GameListItemBinding,private val gameItemIn: GameItemIn) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(gameData: GameData) {
         binding.ivGamePoster.urlToImage(gameData.imageUrl)
@@ -61,5 +58,6 @@ class GameViewHolder(private val binding: GameListItemBinding) :
             "${gameData.rating?:""} ${gameData.released?:""}"
         }
         binding.tvRatingReleased.text = ratingAndDate
+        binding.cvGameList.setOnClickListener { gameItemIn.gameData(gameData) }
     }
 }

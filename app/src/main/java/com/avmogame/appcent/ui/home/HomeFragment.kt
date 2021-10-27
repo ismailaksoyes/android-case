@@ -12,6 +12,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import com.avmogame.appcent.R
 import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.databinding.FragmentHomeBinding
 import com.avmogame.appcent.ui.home.adapter.GameAdapter
+import com.avmogame.appcent.ui.home.adapter.GameItemIn
 import com.avmogame.appcent.ui.home.adapter.SlidePagerAdapter
 import com.avmogame.appcent.util.GameAdapterState
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,16 +37,15 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
     private val slideAdapter by lazy { SlidePagerAdapter() }
 
-    lateinit var binding : FragmentHomeBinding
+    lateinit var binding: FragmentHomeBinding
 
-    val viewModel:HomeViewModel by viewModels()
+    val viewModel: HomeViewModel by viewModels()
 
     private var isLoading: Boolean = false
 
-    private var isSearch:Boolean = false
+    private var isSearch: Boolean = false
 
     private lateinit var layoutManager: LinearLayoutManager
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -73,7 +74,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeSearch() {
-        viewModel.searchResult.observe(viewLifecycleOwner,{
+        viewModel.searchResult.observe(viewLifecycleOwner, {
             (binding.rvGames.adapter as GameAdapter).submitList(it)
         })
     }
@@ -85,10 +86,10 @@ class HomeFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun afterTextChanged(editable: Editable?) {
-                if(editable.toString().length>=2){
+                if (editable.toString().length >= 2) {
                     sendSearchQuery(editable.toString())
                     setAdapterState(GameAdapterState.SEARCH_STATE)
-                }else if(editable.toString().isEmpty()){
+                } else if (editable.toString().isEmpty()) {
                     showFeed()
                 }
             }
@@ -96,7 +97,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapterState(currentState: GameAdapterState) {
-       viewModel.setGameState(currentState)
+        viewModel.setGameState(currentState)
     }
 
     private fun sendSearchQuery(keyword: String) {
@@ -110,15 +111,18 @@ class HomeFragment : Fragment() {
         (binding.rvGames.adapter as GameAdapter).setData(viewModel.tempList)
     }
 
+    private fun clickItem() {
+
+    }
 
 
-    private fun scrollListener(){
-        binding.rvGames.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+    private fun scrollListener() {
+        binding.rvGames.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 recyclerView.layoutManager?.let { itLayoutManager ->
                     if (!isLoading && itLayoutManager.itemCount == (layoutManager.findLastVisibleItemPosition() + 1) && itLayoutManager.itemCount > 1) {
-                        if (!isSearch){
+                        if (!isSearch) {
                             isLoading = true
                             loadGamesData(page = viewModel.currentPage.plus(1))
                         }
@@ -130,24 +134,26 @@ class HomeFragment : Fragment() {
         })
 
     }
-    private fun loadGamesData(page:Int?){
-        page?.let { itPage->
+
+    private fun loadGamesData(page: Int?) {
+        page?.let { itPage ->
             lifecycleScope.launch {
                 viewModel.loadGames(itPage)
             }
         }
     }
 
-    private fun observeGamesData(){
+    private fun observeGamesData() {
         lifecycleScope.launch {
             viewModel.gameList.collect {
-                when(it){
-                    is HomeViewModel.GamesState.SlideData->{
+                when (it) {
+                    is HomeViewModel.GamesState.SlideData -> {
                         slideAdapter.replaceItems(it.gameData)
                     }
-                    is HomeViewModel.GamesState.GamesData->{
-                        if(binding.rvGames.adapter is GameAdapter){
-                            val oldList: ArrayList<GameData> = ArrayList((binding.rvGames.adapter as GameAdapter).currentList)
+                    is HomeViewModel.GamesState.GamesData -> {
+                        if (binding.rvGames.adapter is GameAdapter) {
+                            val oldList: ArrayList<GameData> =
+                                ArrayList((binding.rvGames.adapter as GameAdapter).currentList)
                             oldList.addAll(it.gameData)
                             (binding.rvGames.adapter as GameAdapter).setData(oldList)
                             isLoading = false
@@ -157,44 +163,54 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private fun setupSlideViewPager(){
+
+    private fun setupSlideViewPager() {
         binding.pager2.adapter = slideAdapter
     }
 
-    private fun setupGamesAdapter(){
-        binding.rvGames.adapter = GameAdapter()
+    private fun setupGamesAdapter() {
+        binding.rvGames.adapter = GameAdapter(object : GameItemIn {
+            override fun gameData(gameData: GameData) {
+                navigateDetails(gameData)
+            }
+
+        })
         binding.rvGames.itemAnimator = null
         binding.rvGames.layoutManager = layoutManager
     }
 
-    private fun isSearch(){
+    private fun isSearch() {
         isSearch = true
         binding.pager2.visibility = View.GONE
     }
 
-    private fun isFeed(){
+    private fun navigateDetails(gameData: GameData) {
+
+        val action = HomeFragmentDirections.actionDestinationHomeToDestinationDetails(gameData)
+        findNavController().navigate(action)
+
+    }
+
+    private fun isFeed() {
         isSearch = false
         binding.pager2.visibility = View.VISIBLE
     }
 
-    private fun observeAdapterState(){
+    private fun observeAdapterState() {
         lifecycleScope.launch {
             viewModel.gameAdapterState.observe(viewLifecycleOwner, Observer {
-                Log.d("sdadsadas",it.toString())
-                when(it){
-                    GameAdapterState.FEED_STATE->{
+                when (it) {
+                    GameAdapterState.FEED_STATE -> {
                         isFeed()
                     }
-                    GameAdapterState.SEARCH_STATE->{
+                    GameAdapterState.SEARCH_STATE -> {
                         isSearch()
                     }
                 }
 
-
             })
         }
     }
-
 
 
 }

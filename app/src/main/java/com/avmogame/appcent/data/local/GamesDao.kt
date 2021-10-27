@@ -18,5 +18,14 @@ interface GamesDao {
     @Query("SELECT * FROM games WHERE name LIKE '%' || :search || '%' ")
     suspend fun getGameSearch(search:String?):List<Games>
 
+    @Query("SELECT * FROM games WHERE gameId=:gameId")
+    suspend fun getLocalGameData(gameId:Int):Games
+
+    @Query("UPDATE games SET isFavorites = :isFav WHERE gameId=:gameId")
+    suspend fun setFavoriteType(isFav:Boolean,gameId: Int)
+
+    @Query("SELECT isFavorites FROM games WHERE gameId=:gameId")
+    suspend fun getFavoriteType(gameId: Int):Boolean
+
 
 }
