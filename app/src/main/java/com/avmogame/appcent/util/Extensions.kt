@@ -35,7 +35,9 @@ fun List<ResponseGame>.toGamesData() = map{
         name = it.name,
         rating = it.rating,
         gameId = it.id,
-        released = it.released
+        released = it.released,
+        isFavorites = false
+
 
     )
 }
@@ -46,7 +48,17 @@ fun List<GameData>.toGameEntity() = map {
         name = it.name,
         rating = it.rating,
         gameId = it.gameId,
+        released = it.released
+    )
+}
+
+fun List<Games>.toGameData() = map {
+    GameData(
+    imageUrl = it.imageUrl,
+        name = it.name,
+        rating = it.rating,
+        gameId = it.gameId,
         released = it.released,
-        isFavorites = false
+        isFavorites = it.isFavorites
     )
 }

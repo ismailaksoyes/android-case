@@ -9,7 +9,7 @@ import com.avmogame.appcent.data.entities.Games
 @Dao
 interface GamesDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addGames(games: List<Games>)
 
     @Query("SELECT * FROM games WHERE isFavorites = 1")

@@ -21,4 +21,8 @@ class Repository @Inject constructor(private val remoteDataSource: RemoteDataSou
     suspend fun setLocalGameData(games:List<Games>){
         localDataSource.addGames(games)
     }
+    suspend fun getLocalFavoritesGames() = localDataSource.getFavoriteGames()
+
+    suspend fun searchGame(search: String) =  localDataSource.getGameSearch(search)
+
 }

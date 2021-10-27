@@ -1,13 +1,13 @@
 package com.avmogame.appcent.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avmogame.appcent.data.entities.ResponseGames
 import com.avmogame.appcent.data.repository.Repository
 import com.avmogame.appcent.data.local.GameData
-import com.avmogame.appcent.util.Resource
-import com.avmogame.appcent.util.toGameEntity
-import com.avmogame.appcent.util.toGamesData
+import com.avmogame.appcent.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,8 +18,11 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
     private val _gameList = MutableStateFlow<GamesState>(GamesState.Empty)
     val gameList: StateFlow<GamesState> = _gameList
-
+    val tempList: ArrayList<GameData> = arrayListOf()
+    val searchResult= MutableLiveData<List<GameData>>()
+    val gameAdapterState= MutableLiveData<GameAdapterState>(GameAdapterState.FEED_STATE)
     private val firstPage = 1
+    var currentPage = firstPage
 
     init {
         loadGames(firstPage)
@@ -39,14 +42,17 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 when (val response = repository.getGameList(page)) {
                     is Resource.Success -> {
                         response.data?.let { itData ->
+                            currentPage = page
                             val result = itData.results.toGamesData()
                             setLocalData(result)
                             if (itPage == firstPage) {
                                 val firstData = firstGameData(result)
                                 slideData(firstData.first)
                                 gamesData(firstData.second)
+                                tempList.addAll(firstData.second)
                             } else {
                                 gamesData(result)
+                                tempList.addAll(result)
                             }
                         }
 
@@ -60,7 +66,7 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
     }
 
-   private fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
+    private fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
         val slideData = games.take(3)
         val gamesData = games.drop(3)
         return Pair(slideData, gamesData)
@@ -84,5 +90,13 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
         _gameList.value = GamesState.GamesData(gameData)
 
+    }
+
+    suspend fun searchQuery(keyword: String) {
+        searchResult.postValue(repository.searchGame(keyword).toGameData())
+    }
+
+     fun setGameState(currentState: GameAdapterState){
+        gameAdapterState.postValue(currentState)
     }
 }
