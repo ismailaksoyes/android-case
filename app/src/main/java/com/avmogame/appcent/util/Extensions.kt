@@ -2,6 +2,7 @@ package com.avmogame.appcent.util
 
 import android.widget.ImageView
 import androidx.lifecycle.Transformations.map
+import com.avmogame.appcent.data.entities.GameDetailsData
 import com.avmogame.appcent.data.entities.Games
 import com.avmogame.appcent.data.entities.ResponseGame
 import com.avmogame.appcent.data.entities.ResponseGames
@@ -25,6 +26,15 @@ fun ResponseGame.toGameData() = GameData(
     name = name,
     rating = rating,
     gameId = id,
+    released = released
+
+)
+
+fun Games.toGameData() = GameData(
+    imageUrl = imageUrl,
+    name = name,
+    rating = rating,
+    gameId = gameId,
     released = released
 
 )
@@ -62,3 +72,8 @@ fun List<Games>.toGameData() = map {
         isFavorites = it.isFavorites
     )
 }
+
+fun ResponseGame.toGameDetails() = GameDetailsData(
+    gameDesc = descriptionRaw,
+    metacritic = metacritic
+)

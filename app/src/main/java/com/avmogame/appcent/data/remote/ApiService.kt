@@ -1,5 +1,6 @@
 package com.avmogame.appcent.data.remote
 
+import com.avmogame.appcent.data.entities.ResponseGame
 import com.avmogame.appcent.data.entities.ResponseGames
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,6 +17,6 @@ interface ApiService {
     @GET("games/{gameId}")
     suspend fun getGameDetails(
         @Path("gameId") gameId:Int
-    ):Response<ResponseGames>
+    ):Response<ResponseGame>
 
 }
