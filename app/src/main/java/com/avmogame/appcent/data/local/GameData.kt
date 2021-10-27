@@ -8,5 +8,6 @@ data class GameData(
     val name:String?,
     val rating:String?,
     val gameId:Int?,
-    val released:String?
+    val released:String?,
+    val isFavorites:Boolean? = false
 )

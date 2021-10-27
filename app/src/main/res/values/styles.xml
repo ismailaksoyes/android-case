@@ -12,4 +12,10 @@
         <item name="android:textColor">@color/blue_dark</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
+
+    <style name="text_big_style">
+        <item name="fontFamily">@font/ibm_plex_sans_bold</item>
+        <item name="android:textColor">@color/blue_dark</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+    </style>
 </resources>
