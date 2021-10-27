@@ -25,7 +25,6 @@ object ApiModule {
     fun provideBaseUrl() = Constants.BASE_URL
 
 
-
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit) = retrofit.create(ApiService::class.java)
@@ -42,7 +41,10 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(apiInterceptor: Interceptor,@ApplicationContext context:Context): OkHttpClient {
+    fun provideOkHttpClient(
+        apiInterceptor: Interceptor,
+        @ApplicationContext context: Context
+    ): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
         val cache = Cache(File(context.cacheDir, "http-cache"), 10 * 1024 * 1024)
@@ -62,7 +64,7 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideApiInterceptor(apiInterceptor: ApiInterceptor): Interceptor = apiInterceptor
+    fun provideTokenInterceptor(tokenInterceptor: TokenInterceptor): Interceptor = tokenInterceptor
 
 
 }

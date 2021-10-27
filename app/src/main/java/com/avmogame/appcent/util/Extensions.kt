@@ -1,5 +1,7 @@
 package com.avmogame.appcent.util
 
+import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.ImageView
 import androidx.lifecycle.Transformations.map
 import com.avmogame.appcent.data.entities.GameDetailsData
@@ -8,6 +10,7 @@ import com.avmogame.appcent.data.entities.ResponseGame
 import com.avmogame.appcent.data.entities.ResponseGames
 import com.avmogame.appcent.data.local.GameData
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 
 fun ImageView.urlToImage(url:String?){
@@ -16,6 +19,7 @@ fun ImageView.urlToImage(url:String?){
         Glide.with(context)
             .load(itUrl)
             .centerCrop()
+            .transition(DrawableTransitionOptions.withCrossFade(150))
             .into(this)
 
     }
@@ -77,3 +81,10 @@ fun ResponseGame.toGameDetails() = GameDetailsData(
     gameDesc = descriptionRaw,
     metacritic = metacritic
 )
+
+fun View.fadeIn(durationMillis: Long = 250) {
+    this.startAnimation(AlphaAnimation(0F, 1F).apply {
+        duration = durationMillis
+        fillAfter = true
+    })
+}

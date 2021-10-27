@@ -12,31 +12,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(val repository: Repository):ViewModel() {
+class FavoritesViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
-   private val _favoritesData = MutableStateFlow<FavoritesState>(FavoritesState.Empty)
-   val favoritesData:StateFlow<FavoritesState> = _favoritesData
+    private val _favoritesData = MutableStateFlow<FavoritesState>(FavoritesState.Empty)
+    val favoritesData: StateFlow<FavoritesState> = _favoritesData
 
     init {
         getFavoritesGame()
     }
 
-    sealed class FavoritesState{
-        object Empty:FavoritesState()
-        object Loading:FavoritesState()
-        data class Success(val gameList:List<GameData>):FavoritesState()
+    sealed class FavoritesState {
+        object Empty : FavoritesState()
+        data class Success(val gameList: List<GameData>) : FavoritesState()
     }
 
-   private fun getFavoritesGame(){
+    fun getFavoritesGame() {
         viewModelScope.launch {
-           val response = repository.getLocalFavoritesGames()
-            if (response.isNotEmpty()){
+            val response = repository.getLocalFavoritesGames()
+            if (response.isNotEmpty()) {
                 _favoritesData.value = FavoritesState.Success(response.toGameData())
             }
         }
     }
-
-
-
 
 }

@@ -12,9 +12,11 @@
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.14893617021276595" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_star.xml" value="0.25226449275362317" />
-        <entry key="app/src/main/res/layout/game_list_item.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/game_list_item.xml" value="0.28331662563257815" />
         <entry key="app/src/main/res/layout/game_viewpager_item.xml" value="0.125" />
         <entry key="app/src/main/res/layout/search_topbar.xml" value="0.1743659420289855" />
+        <entry key="app/src/main/res/layout/shimmer_game_data.xml" value="0.21693840579710144" />
+        <entry key="app/src/main/res/layout/shimmer_game_list_item.xml" value="0.21693840579710144" />
         <entry key="app/src/main/res/menu/bottom_navigation_item.xml" value="0.20555555555555555" />
       </map>
     </option>

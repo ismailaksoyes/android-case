@@ -5,41 +5,67 @@ import androidx.recyclerview.widget.RecyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.util.ObjectsCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 
 import com.avmogame.appcent.data.local.GameData
 import com.avmogame.appcent.databinding.GameListItemBinding
+import com.avmogame.appcent.ui.home.adapter.GameViewHolder
+import com.avmogame.appcent.util.Signs
 import com.avmogame.appcent.util.urlToImage
 
-class FavoritesAdapter : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
+class FavoritesAdapter(private val gameItemClick: (GameData) -> Unit) :
+    ListAdapter<GameData, FavoritesHolder>(
+        DiffCallback()
+    ) {
 
-    private var _gamesList = listOf<GameData>()
+    private var list = mutableListOf<GameData>()
 
-    class ViewHolder(private val binding: GameListItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(gameData: GameData){
-            binding.ivGamePoster.urlToImage(gameData.imageUrl)
-            binding.tvGameName.text = gameData.name
-            binding.tvRatingReleased.text = "${gameData.rating} / ${gameData.released}"
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesHolder {
+        val binding =
+            GameListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FavoritesHolder(binding, gameItemClick)
+    }
+
+    override fun onBindViewHolder(holder: FavoritesHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    fun setData(list: List<GameData>) {
+        this.list = list.toMutableList()
+        submitList(list)
+    }
+
+}
+
+class FavoritesHolder(
+    private val binding: GameListItemBinding,
+    private val favoriteItemClick: (GameData) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(gameData: GameData) {
+        binding.ivGamePoster.urlToImage(gameData.imageUrl)
+        binding.tvGameName.text = gameData.name
+        val ratingAndDate = if (gameData.rating != null && gameData.released != null) {
+            "${gameData.rating} ${Signs.slash} ${gameData.released}"
+        } else {
+            "${gameData.rating ?: ""} ${gameData.released ?: ""}"
+        }
+        binding.tvRatingReleased.text = ratingAndDate
+        binding.cvGameList.setOnClickListener {
+            favoriteItemClick.invoke(gameData)
         }
     }
+}
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = GameListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return ViewHolder(binding)
+private class DiffCallback : DiffUtil.ItemCallback<GameData>() {
+
+    override fun areItemsTheSame(oldItem: GameData, newItem: GameData): Boolean {
+        return oldItem.gameId == newItem.gameId
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(_gamesList[position])
+    override fun areContentsTheSame(oldItem: GameData, newItem: GameData): Boolean {
+        return ObjectsCompat.equals(oldItem, newItem)
     }
-
-    override fun getItemCount(): Int {
-        return _gamesList.size
-    }
-
-    fun replaceItems(gameData: List<GameData>){
-        this._gamesList = gameData
-        notifyDataSetChanged()
-    }
-
-
 }

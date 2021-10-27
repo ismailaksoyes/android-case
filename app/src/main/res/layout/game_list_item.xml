@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/cv_game_list"
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/cv_game_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
     android:layout_marginTop="5dp"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:focusable="true">
+    android:focusable="true"
+    xmlns:tools="http://schemas.android.com/tools">
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_game_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_game_name"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_small"
-        app:cardElevation="4dp">
+        app:layout_constraintEnd_toStartOf="@id/tv_game_name">
 
         <ImageView
             android:id="@+id/iv_game_poster"
@@ -38,7 +38,7 @@
         app:layout_constraintStart_toEndOf="@id/cv_game_poster"
         style="@style/text_normal_style"
         android:layout_marginStart="20dp"
-        android:text="GAME OF NAME"/>
+        tools:text="GAME OF NAME"/>
     <TextView
         android:id="@+id/tv_rating_released"
         android:layout_width="wrap_content"

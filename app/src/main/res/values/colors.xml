@@ -11,4 +11,5 @@
     <color name="blue_dark">#272E32</color>
     <color name="red">#FF5B60</color>
     <color name="trans">#00FFFFFF</color>
+    <color name="shimmer_color">#a2878787</color>
 </resources>
