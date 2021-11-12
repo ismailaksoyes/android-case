@@ -27,5 +27,8 @@ interface GamesDao {
     @Query("SELECT isFavorites FROM games WHERE gameId=:gameId")
     suspend fun getFavoriteType(gameId: Int):Boolean
 
+    @Query("SELECT * FROM games")
+    suspend fun getAllGames():List<Games>
+
 
 }

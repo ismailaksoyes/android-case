@@ -9,4 +9,5 @@
     <string name="favorites_title">Favorites</string>
     <string name="details_title">Details</string>
     <string name="not_found">The searched game not found.</string>
+    <string name="not_found_favorite_game">You don\'t have any favorite games yet. :( </string>
 </resources>

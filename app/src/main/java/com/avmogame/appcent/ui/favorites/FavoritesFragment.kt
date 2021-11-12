@@ -43,7 +43,10 @@ class FavoritesFragment : Fragment() {
             viewModel.favoritesData.collect {
                 when (it) {
                     is FavoritesViewModel.FavoritesState.Success -> {
+                        binding.tvNotFound.visibility = View.GONE
                         (binding.rvFavorites.adapter as FavoritesAdapter).setData(it.gameList)
+                    }else->{
+                        binding.tvNotFound.visibility = View.VISIBLE
                     }
                 }
             }

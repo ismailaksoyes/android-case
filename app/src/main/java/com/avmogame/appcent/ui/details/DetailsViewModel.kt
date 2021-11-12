@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avmogame.appcent.data.entities.GameDetailsData
-import com.avmogame.appcent.data.local.GameData
-import com.avmogame.appcent.data.repository.Repository
+import com.avmogame.appcent.data.repository.GameRepositoryImpl
 import com.avmogame.appcent.util.Resource
-import com.avmogame.appcent.util.toGameData
 import com.avmogame.appcent.util.toGameDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class DetailsViewModel @Inject constructor(val gameRepositoryImpl: GameRepositoryImpl) : ViewModel() {
 
     private val _gameDetails = MutableStateFlow<DetailState>(DetailState.Empty)
     val gameDetails: StateFlow<DetailState> = _gameDetails
@@ -32,7 +30,7 @@ class DetailsViewModel @Inject constructor(val repository: Repository) : ViewMod
 
     suspend fun getGameDetails() {
         viewModelScope.launch {
-            when (val response = repository.getGameDetails(gameId)) {
+            when (val response = gameRepositoryImpl.getGameDetails(gameId)) {
                 is Resource.Success -> {
                     response.data?.let { itData ->
                         _gameDetails.value = DetailState.DetailsData(itData.toGameDetails())
@@ -46,7 +44,7 @@ class DetailsViewModel @Inject constructor(val repository: Repository) : ViewMod
 
     suspend fun getFavoriteStatus() {
         viewModelScope.launch {
-            val response = repository.getFavoriteType(gameId)
+            val response = gameRepositoryImpl.getFavoriteType(gameId)
             favoriteType.postValue(response)
         }
     }
@@ -54,7 +52,7 @@ class DetailsViewModel @Inject constructor(val repository: Repository) : ViewMod
     fun setFavoritesType() {
         viewModelScope.launch {
             favoriteType.value?.let { itValue ->
-                repository.setFavoritesType(!itValue, gameId)
+                gameRepositoryImpl.setFavoritesType(!itValue, gameId)
                 getFavoriteStatus()
             }
 
