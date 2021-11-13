@@ -54,7 +54,7 @@ class FakeRepository @Inject constructor() :IGameRepository {
                 released = "released",
                 isFavorites = false
             )
-        )
+        ).filter { it.name ==search }
     }
 
     override suspend fun getLocalGameData(gameId: Int): Games {

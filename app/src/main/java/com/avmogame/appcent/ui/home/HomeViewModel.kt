@@ -19,6 +19,9 @@ class HomeViewModel @Inject constructor(val repository: IGameRepository) : ViewM
 
     private val _gameSlideList = MutableStateFlow<SlideState>(SlideState.Empty)
     val gameSlideList: StateFlow<SlideState> = _gameSlideList
+
+
+    
     val tempList: ArrayList<GameData> = arrayListOf()
     val searchResult = MutableLiveData<List<GameData>>()
     val gameAdapterState = MutableLiveData(GameAdapterState.FEED_STATE)
@@ -73,9 +76,11 @@ class HomeViewModel @Inject constructor(val repository: IGameRepository) : ViewM
 
     }
 
-    private fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
+    private  fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
+
         val slideData = games.take(3)
         val gamesData = games.drop(3)
+
         return Pair(slideData, gamesData)
     }
 
