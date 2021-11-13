@@ -88,3 +88,13 @@ fun View.fadeIn(durationMillis: Long = 250) {
         fillAfter = true
     })
 }
+
+public fun <T> List<T>.drop1(n: Int): List<T> {
+   // require(n >= 0) { "Requested element count $n is less than zero." }
+    val list = ArrayList<T>(n)
+    val size = this.size
+    for (i in size-n..size){
+        list.add(this[i])
+    }
+    return list
+}

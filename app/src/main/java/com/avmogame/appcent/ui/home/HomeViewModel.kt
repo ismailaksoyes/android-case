@@ -1,12 +1,10 @@
 package com.avmogame.appcent.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.avmogame.appcent.data.entities.ResponseGames
-import com.avmogame.appcent.data.repository.Repository
 import com.avmogame.appcent.data.local.GameData
+import com.avmogame.appcent.data.repository.IGameRepository
 import com.avmogame.appcent.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -14,16 +12,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class HomeViewModel @Inject constructor(val repository: IGameRepository) : ViewModel() {
 
     private val _gameList = MutableStateFlow<GamesState>(GamesState.Empty)
     val gameList: StateFlow<GamesState> = _gameList
 
     private val _gameSlideList = MutableStateFlow<SlideState>(SlideState.Empty)
     val gameSlideList: StateFlow<SlideState> = _gameSlideList
+
+
+    
     val tempList: ArrayList<GameData> = arrayListOf()
     val searchResult = MutableLiveData<List<GameData>>()
-    val gameAdapterState = MutableLiveData<GameAdapterState>(GameAdapterState.FEED_STATE)
+    val gameAdapterState = MutableLiveData(GameAdapterState.FEED_STATE)
     private val firstPage = 1
     var currentPage = firstPage
 
@@ -36,10 +37,13 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
         data class GamesData(val gameData: List<GameData>) : GamesState()
     }
 
+
+
     sealed class SlideState {
         object Empty : SlideState()
         data class SlideData(val gameData: List<GameData>) : SlideState()
     }
+
 
 
     fun loadGames(page: Int?) {
@@ -72,9 +76,11 @@ class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
     }
 
-    private fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
+    private  fun firstGameData(games: List<GameData>): Pair<List<GameData>, List<GameData>> {
+
         val slideData = games.take(3)
         val gamesData = games.drop(3)
+
         return Pair(slideData, gamesData)
     }
 

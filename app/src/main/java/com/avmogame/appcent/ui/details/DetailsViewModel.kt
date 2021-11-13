@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.avmogame.appcent.data.entities.GameDetailsData
-import com.avmogame.appcent.data.local.GameData
-import com.avmogame.appcent.data.repository.Repository
+import com.avmogame.appcent.data.repository.GameRepositoryImpl
+import com.avmogame.appcent.data.repository.IGameRepository
 import com.avmogame.appcent.util.Resource
-import com.avmogame.appcent.util.toGameData
 import com.avmogame.appcent.util.toGameDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class DetailsViewModel @Inject constructor(val repository: IGameRepository) : ViewModel() {
 
     private val _gameDetails = MutableStateFlow<DetailState>(DetailState.Empty)
     val gameDetails: StateFlow<DetailState> = _gameDetails
@@ -27,6 +26,7 @@ class DetailsViewModel @Inject constructor(val repository: Repository) : ViewMod
 
     sealed class DetailState {
         object Empty : DetailState()
+        object Error : DetailState()
         data class DetailsData(val gameData: GameDetailsData) : DetailState()
     }
 
@@ -37,7 +37,9 @@ class DetailsViewModel @Inject constructor(val repository: Repository) : ViewMod
                     response.data?.let { itData ->
                         _gameDetails.value = DetailState.DetailsData(itData.toGameDetails())
                     }
-
+                }
+                is Resource.Error->{
+                    _gameDetails.value = DetailState.Error
                 }
 
             }

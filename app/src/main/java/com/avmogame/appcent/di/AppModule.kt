@@ -3,6 +3,8 @@ package com.avmogame.appcent.di
 import android.content.Context
 import androidx.room.Room
 import com.avmogame.appcent.data.local.AppDatabase
+import com.avmogame.appcent.data.repository.IGameRepository
+import com.avmogame.appcent.data.repository.GameRepositoryImpl
 import com.avmogame.appcent.util.Constants.GAME_DATABASE
 import com.avmogame.appcent.util.Network
 import com.avmogame.appcent.util.NetworkConnectivity
@@ -34,4 +36,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRoomDao(db: AppDatabase) = db.gamesDao
+
+    @Singleton
+    @Provides
+    fun provideRepository(gameRepositoryImpl: GameRepositoryImpl):IGameRepository = gameRepositoryImpl
 }

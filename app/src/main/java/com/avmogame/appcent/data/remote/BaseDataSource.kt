@@ -1,8 +1,9 @@
 package com.avmogame.appcent.data.remote
 
-import android.util.Log
+
 import com.avmogame.appcent.util.Resource
 import retrofit2.Response
+
 
 
 abstract class BaseDataSource {
@@ -26,3 +27,4 @@ abstract class BaseDataSource {
         return Resource.Error(message)
     }
 }
+

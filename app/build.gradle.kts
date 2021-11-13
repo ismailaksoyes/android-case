@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = buildConfigVersions.compileSdkVersion
 
     defaultConfig {
         applicationId ="com.avmogame.appcent"
@@ -18,6 +18,7 @@ android {
         versionName = buildConfigVersions.versionName
 
         testInstrumentationRunner= ("androidx.test.runner.AndroidJUnitRunner")
+
     }
 
     buildTypes {
@@ -27,7 +28,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,6 +42,21 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src/main/assets")
+            }
+        }
+        getByName("test"){
+            resources {
+                srcDir("src/test/assets")
+            }
+        }
     }
 }
 
@@ -55,6 +73,7 @@ dependencies {
     implementation(kotlinDependencies.kotlin)
     implementation(kotlinDependencies.coroutines_core)
     implementation(kotlinDependencies.coroutines)
+    //testImplementation(kotlinDependencies.coroutines_test)
     //retrofit
     implementation(retrofitDependencies.retrofit2)
     implementation(retrofitDependencies.converter_gson)
@@ -80,12 +99,28 @@ dependencies {
 
     implementation(pagingDependencies.paging)
 
-    testImplementation(testingDepencies.junit)
-    testImplementation(testingDepencies.junit_ext)
-    testImplementation(testingDepencies.espresso)
+
 
     kapt(roomDependencies.room_compiler)
     implementation(roomDependencies.room_ktx)
-    implementation(roomDependencies.room_testing)
+
+    //unittest
+    testImplementation(testingDepencies.junit)
+    testImplementation(testingDepencies.espresso)
+    testImplementation (testingDepencies.mockito)
+    testImplementation (testingDepencies.coroutines_test)
+    testImplementation(testingDepencies.room_testing)
+    testImplementation(testingDepencies.arc_core)
+    testImplementation ("com.google.truth:truth:1.1.3")
+    testImplementation ("app.cash.turbine:turbine:0.7.0")
+
+    //instrumented unit test
+    androidTestİmplementation(testingDepencies.junit)
+    androidTestİmplementation(testingDepencies.junit_ext)
+    androidTestİmplementation(testingDepencies.coroutines_test)
+    androidTestİmplementation(testingDepencies.espresso)
+    androidTestİmplementation(testingDepencies.arc_core)
+    androidTestİmplementation("com.google.truth:truth:1.1.3")
+
 
 }

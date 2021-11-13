@@ -5,6 +5,7 @@ object Versions {
     const val kotlin_version = "1.5.30"
     const val hilt_version = "2.38.1"
     const val activity_ktx_version = "1.3.1"
+    const val arc_core_version = "2.1.0"
 
     const val retrofit2_version = "2.9.0"
     const val okhttp_logging_interceptor_version = "4.9.0"
@@ -24,9 +25,11 @@ object Versions {
 
     const val multidex_version = "1.0.3"
 
-    const val junit_version = "4.13.2"
+    const val junit_version = "4.13"
     const val ext_junit_version = "1.1.3"
     const val espresso_version = "3.4.0"
+    const val mockito_version = "3.2.0"
+
     const val coroutines_play_services_version = "1.2.1"
 
     const val facebook_shimmer_version = "0.4.0"
@@ -75,6 +78,8 @@ object kotlinDependencies {
     const val coroutines_play_services =
         "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutines_play_services_version}"
 
+
+
 }
 
 object retrofitDependencies {
@@ -94,6 +99,10 @@ object testingDepencies {
     const val junit = "junit:junit:${Versions.junit_version}"
     const val junit_ext = "androidx.test.ext:junit:${Versions.ext_junit_version}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso_version}"
+    const val mockito = "org.mockito.kotlin:mockito-kotlin:${Versions.mockito_version}"
+    const val room_testing = "androidx.room:room-testing:${Versions.room_version}"
+    const val coroutines_test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines_version}"
+    const val arc_core = "androidx.arch.core:core-testing:${Versions.arc_core_version}"
 }
 object hiltDependencies {
     const val hilt = "com.google.dagger:hilt-android:${Versions.hilt_version}"
@@ -110,5 +119,6 @@ object pagingDependencies{
 object roomDependencies {
     const val room_ktx = "androidx.room:room-ktx:${Versions.room_version}"
     const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
-    const val room_testing = "androidx.room:room-testing:${Versions.room_version}"
+
 }
+
